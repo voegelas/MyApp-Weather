@@ -1,0 +1,21 @@
+%# vim: ft=perl
+<div class="weather">
+% my $format_temperature = make_format_temperature($units->{temperature});
+% for my $day (splice @{$forecast->days}, 0, 6) {
+%   my $date     = $day->date->strftime('%a %d.%m.');
+%   my $images   = join q{}, map {
+%     my $name = sprintf "%X", ord $_;
+%     qq{<img alt="$_" src="/images/openmoji/$name.svg">};
+%   } grep { (ord $_ & 0xfff0) ne 0xfe00 } split //, $day->emojis;
+%   my $max_temp = $day->air_temperature_max;
+%   my $min_temp = $day->air_temperature_min;
+ <div class="day">
+  <div class="date"><%= $date %></div>
+  <div class="forecast">
+   <div class="icon"><%== $images %></div>
+   <div class="max_temp"><%= $format_temperature->($max_temp) %>°</div>
+   <div class="min_temp"><%= $format_temperature->($min_temp) %>°</div>
+  </div>
+ </div>
+% }
+</div>

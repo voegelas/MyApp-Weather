@@ -1,0 +1,108 @@
+{
+   "abstract" : "Weather forecasts in the iCalendar data format",
+   "author" : [
+      "Andreas V\u00f6gele <voegelas@cpan.org>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "Dist::Zilla version 6.024, CPAN::Meta::Converter version 2.150010",
+   "license" : [
+      "agpl_3"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : 2
+   },
+   "name" : "MyApp-Weather",
+   "prereqs" : {
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "develop" : {
+         "requires" : {
+            "Dist::Zilla" : "0",
+            "Dist::Zilla::Plugin::CopyFilesFromBuild" : "0",
+            "Dist::Zilla::Plugin::Prereqs::FromCPANfile" : "0",
+            "Dist::Zilla::Plugin::Test::Kwalitee" : "0",
+            "Pod::Coverage::TrustPod" : "0",
+            "Test::Kwalitee" : "1.21",
+            "Test::Pod" : "1.41",
+            "Test::Pod::Coverage" : "1.08"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "Exporter" : "0",
+            "Math::BigFloat" : "0",
+            "Mojolicious" : "9.0",
+            "Role::Tiny" : "2.000001",
+            "Time::Piece" : "0",
+            "Time::Seconds" : "0",
+            "perl" : "5.020"
+         }
+      },
+      "test" : {
+         "requires" : {
+            "Test::Mojo" : "0",
+            "Test::More" : "0.96"
+         }
+      }
+   },
+   "provides" : {
+      "MyApp::Weather" : {
+         "file" : "lib/MyApp/Weather.pm",
+         "version" : "0.001"
+      },
+      "MyApp::Weather::Controller::Location" : {
+         "file" : "lib/MyApp/Weather/Controller/Location.pm",
+         "version" : "0.001"
+      },
+      "MyApp::Weather::Model::LocationForecast" : {
+         "file" : "lib/MyApp/Weather/Model/LocationForecast.pm",
+         "version" : "0.001"
+      },
+      "MyApp::Weather::Model::LocationForecast::Day" : {
+         "file" : "lib/MyApp/Weather/Model/LocationForecast/Day.pm",
+         "version" : "0.001"
+      },
+      "MyApp::Weather::Model::LocationForecast::Download" : {
+         "file" : "lib/MyApp/Weather/Model/LocationForecast/Download.pm",
+         "version" : "0.001"
+      },
+      "MyApp::Weather::Model::LocationForecast::Role::TimeSeries" : {
+         "file" : "lib/MyApp/Weather/Model/LocationForecast/Role/TimeSeries.pm",
+         "version" : "0.001"
+      },
+      "MyApp::Weather::Model::LocationForecast::TimeStep" : {
+         "file" : "lib/MyApp/Weather/Model/LocationForecast/TimeStep.pm",
+         "version" : "0.001"
+      },
+      "MyApp::Weather::Model::UserAgent" : {
+         "file" : "lib/MyApp/Weather/Model/UserAgent.pm",
+         "version" : "0.001"
+      },
+      "MyApp::Weather::Model::WeatherBadness" : {
+         "file" : "lib/MyApp/Weather/Model/WeatherBadness.pm",
+         "version" : "0.001"
+      },
+      "MyApp::Weather::Model::WeatherEmojis" : {
+         "file" : "lib/MyApp/Weather/Model/WeatherEmojis.pm",
+         "version" : "0.001"
+      },
+      "MyApp::Weather::Plugin::Helpers" : {
+         "file" : "lib/MyApp/Weather/Plugin/Helpers.pm",
+         "version" : "0.001"
+      },
+      "MyApp::Weather::View::Messages" : {
+         "file" : "lib/MyApp/Weather/View/Messages.pm",
+         "version" : "0.001"
+      }
+   },
+   "release_status" : "stable",
+   "version" : "0.001",
+   "x_generated_by_perl" : "v5.34.0",
+   "x_serialization_backend" : "Cpanel::JSON::XS version 4.27",
+   "x_spdx_expression" : "AGPL-3.0"
+}
+

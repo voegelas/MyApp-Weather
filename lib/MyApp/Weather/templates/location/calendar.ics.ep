@@ -1,0 +1,46 @@
+%# vim: ft=perl
+BEGIN:VCALENDAR
+PRODID:-//MyApp::Weather//Weather Forecast//EN
+VERSION:2.0
+REFRESH-INTERVAL;VALUE=DURATION:PT1H
+% use Mojo::Util qw(sha1_sum);
+% use Time::Piece;
+% my $format_temperature = make_format_temperature($units->{temperature});
+% my $now = gmtime;
+% my $dtstamp = $now->ymd(q{}) . 'T' . $now->hms(q{}) . 'Z';
+% my $title = sprintf gettext($lang => 'title'), $location;
+% for my $day (@{$forecast->days}) {
+%   my $date        = $day->date->ymd(q{});
+%   my $max_temp    = $day->air_temperature_max;
+%   my $min_temp    = $day->air_temperature_min;
+%   my $symbol_code = $day->symbol_code;
+%   my $summary     = $day->emojis . q{ } .
+%                     $format_temperature->($max_temp) . q{/} .
+%                     $format_temperature->($min_temp) . q{°};
+%   my $uid         = sha1_sum("$location$date$agent");
+%   my $description = gettext($lang => 'symbol', $symbol_code);
+%   my $hours       = join '\n', map {
+%     # Some apps interpret consecutive digits as phone numbers.
+%     sprintf "%02d\N{U+200C}-\N{U+200C}%02d: %3d° %s",
+%       $_->from->hour, $_->to->hour || 24,
+%       $format_temperature->($_->air_temperature),
+%       gettext($lang => 'symbols', $_->symbol_code);
+%   } @{$day->timeseries->merge_timesteps};
+%   if ($hours) {
+%     $description = $hours;
+%   }
+BEGIN:VEVENT
+UID:<%== $uid %>
+DTSTAMP:<%== $dtstamp %>
+DTSTART;VALUE=DATE:<%== $date %>
+SUMMARY:<%== $summary %>
+LOCATION:<%== $location %>
+DESCRIPTION:<%== $description %>
+COMMENT:Based on data from MET Norway
+CLASS:PUBLIC
+TRANSP:TRANSPARENT
+X-SOGO-SEND-APPOINTMENT-NOTIFICATIONS:NO
+END:VEVENT
+% }
+X-WR-CALNAME:<%== $title %>
+END:VCALENDAR

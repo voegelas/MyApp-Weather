@@ -1,0 +1,46 @@
+[Unit]
+Description=Weather forecasts
+After=network.target
+
+[Service]
+Type=simple
+User=weather
+Group=nginx
+SupplementaryGroups=weather
+CacheDirectory=weather
+RuntimeDirectory=weather
+RuntimeDirectoryMode=0750
+UMask=0002
+Environment=MOJO_REVERSE_PROXY=1
+EnvironmentFile=/etc/weather.conf
+ExecStart=/usr/bin/weather daemon -m production -l http+unix://%%2Frun%%2Fweather%%2Fhttp.sock
+CapabilityBoundingSet=
+DevicePolicy=closed
+NoNewPrivileges=yes
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+SystemCallArchitectures=native
+MemoryDenyWriteExecute=yes
+PrivateUsers=yes
+ProtectSystem=strict
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictNamespaces=yes
+RestrictRealtime=yes
+LockPersonality=yes
+ProtectClock=yes
+ProtectHostname=yes
+ProtectKernelLogs=yes
+RemoveIPC=yes
+RestrictSUIDSGID=yes
+SystemCallFilter=@system-service
+SystemCallFilter=~@resources
+SystemCallFilter=~@privileged
+ProtectProc=invisible
+ProcSubset=pid
+
+[Install]
+WantedBy=multi-user.target

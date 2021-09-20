@@ -1,0 +1,9 @@
+[-CodeLayout::RequireTidyCode]
+
+[-Documentation::PodSpelling]
+
+[-Subroutines::ProhibitSubroutinePrototypes]
+
+[-ValuesAndExpressions::ProhibitLongChainsOfMethodCalls]
+
+[-ValuesAndExpressions::ProhibitMagicNumbers]
