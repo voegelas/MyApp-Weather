@@ -3,7 +3,7 @@ use Mojo::Base -strict, -signatures;
 
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-our $VERSION = '0.001';
+our $VERSION = '0.002';
 
 use Exporter qw(import);
 
@@ -255,7 +255,7 @@ MyApp::Weather::View::Messages - MyApp::Weather translations
 
 =head1 VERSION
 
-version 0.001
+version 0.002
 
 =head1 SYNOPSIS
 

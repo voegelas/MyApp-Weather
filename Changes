@@ -1,5 +1,9 @@
 Revision history for MyApp::Weather
 
+0.002  2021-11-21 06:53:59 CET
+
+  - Prepend rainy days with a snowflake if there is snow
+
 0.001  2021-09-21 13:47:11 CEST
 
   - First version
