@@ -2,7 +2,7 @@
 
 A [Mojolicious](https://mojolicious.org/) web application that gets weather
 forecasts from [MET Norway](https://api.met.no/) and produces web calendars in
-the iCalendar data format, which can be subscribed from software such as
+the iCalendar data format.  Calendars can be subscribed from software such as
 [Thunderbird](https://www.thunderbird.net/) and
 [ICSx⁵](https://icsx5.bitfire.at/).
 
@@ -63,7 +63,7 @@ The default weather forecast language.
 
 #### REQUEST_BASE
 
-The base in the frontend proxy.
+The base path in the frontend proxy.
 
 #### TEMPERATURE_UNIT
 

@@ -116,6 +116,11 @@ sub _initialize ($self) {
         $emojis = '☔' . $emojis;
       }
     }
+    elsif ($timestep->wetness == 2) {
+      if ($self->is_snowy) {
+        $emojis = '❄' . $emojis;
+      }
+    }
     if ($self->is_foggy) {
       if ($self->symbol_code ne 'fog') {
         $emojis = '🌫' . $emojis;
