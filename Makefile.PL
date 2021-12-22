@@ -21,15 +21,30 @@ my %WriteMakefileArgs = (
   "NAME" => "MyApp::Weather",
   "PREREQ_PM" => {
     "Exporter" => 0,
+    "File::Spec" => 0,
     "Math::BigFloat" => 0,
+    "Mojo::Base" => 0,
+    "Mojo::Collection" => 0,
+    "Mojo::Date" => 0,
+    "Mojo::File" => 0,
+    "Mojo::Home" => 0,
+    "Mojo::JSON" => 0,
+    "Mojo::Log" => 0,
+    "Mojo::Promise" => 0,
+    "Mojo::Util" => 0,
     "Mojolicious" => "9.0",
+    "Mojolicious::Commands" => 0,
     "Role::Tiny" => "2.000001",
     "Time::Piece" => 0,
-    "Time::Seconds" => 0
+    "Time::Seconds" => 0,
+    "lib" => 0,
+    "overload" => 0,
+    "warnings" => 0
   },
   "TEST_REQUIRES" => {
     "Test::Mojo" => 0,
-    "Test::More" => "0.96"
+    "Test::More" => 0,
+    "open" => 0
   },
   "VERSION" => "0.002",
   "test" => {
@@ -40,13 +55,28 @@ my %WriteMakefileArgs = (
 
 my %FallbackPrereqs = (
   "Exporter" => 0,
+  "File::Spec" => 0,
   "Math::BigFloat" => 0,
+  "Mojo::Base" => 0,
+  "Mojo::Collection" => 0,
+  "Mojo::Date" => 0,
+  "Mojo::File" => 0,
+  "Mojo::Home" => 0,
+  "Mojo::JSON" => 0,
+  "Mojo::Log" => 0,
+  "Mojo::Promise" => 0,
+  "Mojo::Util" => 0,
   "Mojolicious" => "9.0",
+  "Mojolicious::Commands" => 0,
   "Role::Tiny" => "2.000001",
   "Test::Mojo" => 0,
-  "Test::More" => "0.96",
+  "Test::More" => 0,
   "Time::Piece" => 0,
-  "Time::Seconds" => 0
+  "Time::Seconds" => 0,
+  "lib" => 0,
+  "open" => 0,
+  "overload" => 0,
+  "warnings" => 0
 );
 
 
