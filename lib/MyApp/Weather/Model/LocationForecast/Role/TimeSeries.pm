@@ -133,7 +133,7 @@ A role for time step collections.
 
   my $collection = $timeseries->available_details;
 
-Returns a Mojo::Collection of available details, e.g. "air_temperature" and
+Returns a L<Mojo::Collection> of available details, e.g. "air_temperature" and
 "wind_speed".
 
 =head2 merge_timesteps
@@ -143,7 +143,7 @@ Returns a Mojo::Collection of available details, e.g. "air_temperature" and
   });
 
 Merges consecutive time steps that are similar according to the specified
-function.  Returns a Mojo::Collection.
+function.  Returns a L<Mojo::Collection>.
 
 =head1 DIAGNOSTICS
 
@@ -155,7 +155,7 @@ None.
 
 =head1 DEPENDENCIES
 
-Requires Mojolicious and Role::Tiny.
+Requires L<Mojolicious> and L<Role::Tiny>.
 
 =head1 INCOMPATIBILITIES
 

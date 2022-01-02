@@ -89,7 +89,7 @@ None.
 
 =head1 DEPENDENCIES
 
-Requires Exporter and Mojolicious.
+Requires L<Exporter> and L<Mojolicious>.
 
 =head1 INCOMPATIBILITIES
 

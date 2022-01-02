@@ -101,8 +101,8 @@ version 0.002
 
 =head1 DESCRIPTION
 
-A Mojolicious::Controller subclass that gets and renders the weather forecast
-for a location.
+A L<Mojolicious::Controller> subclass that gets and renders the weather
+forecast for a location.
 
 =head1 SUBROUTINES/METHODS
 
@@ -139,7 +139,7 @@ See L<MyApp::Weather>.
 
 =head1 DEPENDENCIES
 
-Requires File::Spec and Mojolicious.
+Requires L<File::Spec> and L<Mojolicious>.
 
 =head1 INCOMPATIBILITIES
 

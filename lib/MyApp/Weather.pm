@@ -73,8 +73,9 @@ version 0.002
 
 =head1 DESCRIPTION
 
-A Mojolicious web application that gets weather forecasts from MET Norway and
-produces web calendars in the iCalendar data format.
+A L<Mojolicious> web application that gets weather forecasts from L<MET
+Norway|https://api.met.no/> and produces web calendars in the iCalendar data
+format.
 
 =head1 SUBROUTINES/METHODS
 
@@ -122,7 +123,7 @@ information.
 
 =head1 DEPENDENCIES
 
-Requires Mojolicious.
+Requires L<Mojolicious>.
 
 =head1 INCOMPATIBILITIES
 

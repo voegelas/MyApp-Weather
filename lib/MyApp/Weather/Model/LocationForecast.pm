@@ -100,15 +100,16 @@ A weather forecast decoded from JSON.
 
   my $timeseries = $forecast->timeseries;
 
-Returns a Mojo::Collection of
-MyApp::Weather::Model::LocationForecast::TimeStep objects.
+Returns a L<Mojo::Collection> of
+L<MyApp::Weather::Model::LocationForecast::TimeStep> objects.
 
 =head2 days
 
   my $days = $forecast->days;
 
-Splits the weather forecast into daily forecasts.  Returns a Mojo::Collection
-of MyApp::Weather::Model::LocationForecast::Day objects.
+Splits the weather forecast into daily forecasts.  Returns a
+L<Mojo::Collection> of L<MyApp::Weather::Model::LocationForecast::Day>
+objects.
 
 =head1 DIAGNOSTICS
 
@@ -120,7 +121,7 @@ None.
 
 =head1 DEPENDENCIES
 
-Requires Mojolicious.
+Requires L<Mojolicious>.
 
 =head1 INCOMPATIBILITIES
 

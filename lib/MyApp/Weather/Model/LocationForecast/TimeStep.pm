@@ -185,20 +185,21 @@ A time step decoded from JSON.
 
   my $tp = $timestep->from;
 
-The time step's start time as a Time::Piece object.  The start time is
+The time step's start time as a L<Time::Piece> object.  The start time is
 inclusive.
 
 =head2 to
 
   my $tp = $timestep->to;
 
-The time step's end time as a Time::Piece object.  The end time is exclusive.
+The time step's end time as a L<Time::Piece> object.  The end time is
+exclusive.
 
 =head2 duration
 
   my $seconds = $timestep->duration;
 
-The time step's duration as a Time::Seconds object.
+The time step's duration as a L<Time::Seconds> object.
 
 =head1 SUBROUTINES/METHODS
 
@@ -356,7 +357,7 @@ None.
 
 =head1 DEPENDENCIES
 
-Requires Mojolicious, Time::Piece and Time::Seconds.
+Requires L<Mojolicious>, L<Time::Piece> and L<Time::Seconds>.
 
 =head1 INCOMPATIBILITIES
 
@@ -368,8 +369,8 @@ Andreas Vögele E<lt>andreas@andreasvoegele.comE<gt>
 
 =head1 BUGS AND LIMITATIONS
 
-Currently, the local time zone is used to create Time::Piece objects instead
-of the location's time zone.
+Currently, the local time zone is used to create L<Time::Piece> objects
+instead of the location's time zone.
 
 =head1 LICENSE AND COPYRIGHT
 

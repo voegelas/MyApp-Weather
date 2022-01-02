@@ -219,13 +219,13 @@ A weather forecast for a day.
 
   my $tp = $day->date;
 
-A Time::Piece object.
+A L<Time::Piece> object.
 
 =head2 timeseries
 
   my $timeseries = $day->timeseries;
 
-A Mojo::Collection of MyApp::Weather::Model::LocationForecast::TimeStep
+A L<Mojo::Collection> of L<MyApp::Weather::Model::LocationForecast::TimeStep>
 objects.
 
 =head2 emojis
@@ -283,7 +283,7 @@ None.
 
 =head1 DEPENDENCIES
 
-Requires Mojolicious and Time::Seconds.
+Requires L<Mojolicious> and L<Time::Seconds>.
 
 =head1 INCOMPATIBILITIES
 

@@ -46,7 +46,7 @@ version 0.002
 
 =head1 DESCRIPTION
 
-Helpers for MyApp::Weather.
+Helpers for L<MyApp::Weather>.
 
 =head1 HELPERS
 
@@ -69,7 +69,7 @@ Makes a function that outputs temperatures in Celsius or Fahrenheit.
 
   $plugin->register($app);
 
-Registers helpers in MyApp::Weather.
+Registers helpers in L<MyApp::Weather>.
 
 =head1 DIAGNOSTICS
 
@@ -81,7 +81,7 @@ None.
 
 =head1 DEPENDENCIES
 
-Requires Math::BigFloat and Mojolicious.
+Requires L<Math::BigFloat> and L<Mojolicious>.
 
 =head1 INCOMPATIBILITIES
 

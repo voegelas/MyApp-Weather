@@ -192,7 +192,7 @@ version 0.002
 
 =head1 DESCRIPTION
 
-A Mojo::UserAgent subclass that caches content for a period of time.
+A L<Mojo::UserAgent> subclass that caches content for a period of time.
 
 =head1 ATTRIBUTES
 
@@ -226,13 +226,14 @@ Maps a web address to a filename.
 
   my $tx = $ua->read_cache($cache_file);
 
-Reads cached content from a file and returns a Mojo::Transaction::HTTP object.
+Reads cached content from a file and returns a L<Mojo::Transaction::HTTP>
+object.
 
 =head2 write_cache
 
   my $path = $ua->write_cache($cache_file, $tx);
 
-Writes a Mojo::Transaction::HTTP object to a file.
+Writes a L<Mojo::Transaction::HTTP> object to a file.
 
 =head2 last_modified
 
@@ -258,7 +259,8 @@ Returns true if the cached content is outdated.
   my $promise = $ua->get_p($url, $log, @args);
 
 Reads cached content or performs a non-blocking request.  Returns a
-Mojo::Promise object that is resolved with a Mojo::Transaction::HTTP object.
+L<Mojo::Promise> object that is resolved with a L<Mojo::Transaction::HTTP>
+object.
 
 =head1 DIAGNOSTICS
 
@@ -288,7 +290,7 @@ None.
 
 =head1 DEPENDENCIES
 
-Requires File::Spec and Mojolicious.
+Requires L<File::Spec> and L<Mojolicious>.
 
 =head1 INCOMPATIBILITIES
 

@@ -137,7 +137,7 @@ None.
 
 =head1 DEPENDENCIES
 
-Requires File::Spec and Mojolicious.
+Requires L<File::Spec> and L<Mojolicious>.
 
 =head1 INCOMPATIBILITIES
 
