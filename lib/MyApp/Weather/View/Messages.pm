@@ -3,7 +3,7 @@ use Mojo::Base -strict, -signatures;
 
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-our $VERSION = '0.002';
+our $VERSION = '0.003';
 
 use Exporter qw(import);
 
@@ -255,7 +255,7 @@ MyApp::Weather::View::Messages - MyApp::Weather translations
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =head1 SYNOPSIS
 
@@ -312,7 +312,7 @@ None known.
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright 2021 Andreas Vögele
+Copyright 2022 Andreas Vögele
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU Affero General Public License as published by the Free

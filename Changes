@@ -1,5 +1,10 @@
 Revision history for MyApp::Weather
 
+0.003  2022-01-07 21:53:46 CET
+
+  - Update dist.ini
+  - Bump the copyright year
+
 0.002  2021-11-21 06:53:59 CET
 
   - Prepend rainy days with a snowflake if there is snow

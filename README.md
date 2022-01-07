@@ -77,7 +77,7 @@ information.
 
 ## LICENSE AND COPYRIGHT
 
-Copyright 2021 Andreas Vögele
+Copyright 2022 Andreas Vögele
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU Affero General Public License as published by the Free
