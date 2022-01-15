@@ -26,7 +26,6 @@ requires "warnings" => "0";
 on 'test' => sub {
   requires "Test::Mojo" => "0";
   requires "Test::More" => "0";
-  requires "open" => "0";
 };
 
 on 'configure' => sub {

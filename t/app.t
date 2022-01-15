@@ -4,8 +4,6 @@
 
 use Mojo::Base -strict;
 
-use open ':std', ':encoding(utf8)';
-
 use Test::More;
 use Test::Mojo;
 

@@ -43,8 +43,7 @@ my %WriteMakefileArgs = (
   },
   "TEST_REQUIRES" => {
     "Test::Mojo" => 0,
-    "Test::More" => 0,
-    "open" => 0
+    "Test::More" => 0
   },
   "VERSION" => "0.003",
   "test" => {
@@ -74,7 +73,6 @@ my %FallbackPrereqs = (
   "Time::Piece" => 0,
   "Time::Seconds" => 0,
   "lib" => 0,
-  "open" => 0,
   "overload" => 0,
   "warnings" => 0
 );

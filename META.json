@@ -59,8 +59,7 @@
       "test" : {
          "requires" : {
             "Test::Mojo" : "0",
-            "Test::More" : "0",
-            "open" : "0"
+            "Test::More" : "0"
          }
       }
    },
