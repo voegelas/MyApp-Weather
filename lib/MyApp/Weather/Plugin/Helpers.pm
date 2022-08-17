@@ -16,11 +16,11 @@ sub register ($self, $app, $conf) {
   return;
 }
 
-sub _make_round ($scale = 0) {
+sub _make_round ($scale = -1) {
   return sub ($num) { Math::BigFloat->new($num)->bfround($scale)->numify };
 }
 
-sub _make_format_temperature ($unit, $scale = 0) {
+sub _make_format_temperature ($unit, $scale = -1) {
   my $round = _make_round($scale);
   return $unit eq 'F'
     ? sub ($celsius) { $round->(9.0 * $celsius / 5.0 + 32.0) }
