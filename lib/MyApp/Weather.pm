@@ -3,7 +3,7 @@ use Mojo::Base 'Mojolicious', -signatures;
 
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-our $VERSION = '0.003';
+our $VERSION = '0.004';
 
 use Mojo::File qw(curfile);
 use Mojo::Home;
@@ -63,7 +63,7 @@ MyApp::Weather - Weather forecasts in the iCalendar data format
 
 =head1 VERSION
 
-version 0.003
+version 0.004
 
 =head1 SYNOPSIS
 

@@ -3,7 +3,7 @@ use Mojo::Base -base, -signatures;
 
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-our $VERSION = '0.003';
+our $VERSION = '0.004';
 
 use MyApp::Weather::Model::WeatherEmojis qw($EMOJIS);
 use MyApp::Weather::Model::WeatherBadness qw($BADNESS $WETNESS);
@@ -162,7 +162,7 @@ MyApp::Weather::Model::LocationForecast::TimeStep - Data point in weather foreca
 
 =head1 VERSION
 
-version 0.003
+version 0.004
 
 =head1 SYNOPSIS
 
