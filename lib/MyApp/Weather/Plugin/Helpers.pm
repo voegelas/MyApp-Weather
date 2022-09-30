@@ -5,7 +5,6 @@ use Mojo::Base 'Mojolicious::Plugin', -signatures;
 
 our $VERSION = '0.004';
 
-use Math::BigFloat;
 use MyApp::Weather::View::Messages qw(gettext);
 
 sub register ($self, $app, $conf) {
@@ -17,7 +16,7 @@ sub register ($self, $app, $conf) {
 }
 
 sub _make_round ($scale = -1) {
-  return sub ($num) { Math::BigFloat->new($num)->bfround($scale)->numify };
+  return sub ($num) { int $num + ($num > 0 ? 0.5 : -0.5) };
 }
 
 sub _make_format_temperature ($unit, $scale = -1) {

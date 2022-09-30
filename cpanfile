@@ -3,7 +3,6 @@
 
 requires "Exporter" => "0";
 requires "File::Spec" => "0";
-requires "Math::BigFloat" => "0";
 requires "Mojo::Base" => "0";
 requires "Mojo::Collection" => "0";
 requires "Mojo::Date" => "0";

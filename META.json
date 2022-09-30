@@ -35,7 +35,6 @@
          "requires" : {
             "Exporter" : "0",
             "File::Spec" : "0",
-            "Math::BigFloat" : "0",
             "Mojo::Base" : "0",
             "Mojo::Collection" : "0",
             "Mojo::Date" : "0",
