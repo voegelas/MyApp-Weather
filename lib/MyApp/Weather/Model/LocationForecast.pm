@@ -3,7 +3,7 @@ use Mojo::Base -base, -signatures;
 
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-our $VERSION = '0.004';
+our $VERSION = '0.005';
 
 use Mojo::Collection;
 use MyApp::Weather::Model::LocationForecast::Day;
@@ -72,7 +72,7 @@ MyApp::Weather::Model::LocationForecast - Weather forecast for a location
 
 =head1 VERSION
 
-version 0.004
+version 0.005
 
 =head1 SYNOPSIS
 

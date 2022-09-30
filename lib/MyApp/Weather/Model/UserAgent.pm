@@ -3,7 +3,7 @@ use Mojo::Base 'Mojo::UserAgent', -signatures;
 
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-our $VERSION = '0.004';
+our $VERSION = '0.005';
 
 use File::Spec;
 use Mojo::Date;
@@ -174,7 +174,7 @@ MyApp::Weather::Model::UserAgent - Caching HTTP user agent
 
 =head1 VERSION
 
-version 0.004
+version 0.005
 
 =head1 SYNOPSIS
 

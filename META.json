@@ -65,51 +65,51 @@
    "provides" : {
       "MyApp::Weather" : {
          "file" : "lib/MyApp/Weather.pm",
-         "version" : "0.004"
+         "version" : "0.005"
       },
       "MyApp::Weather::Controller::Location" : {
          "file" : "lib/MyApp/Weather/Controller/Location.pm",
-         "version" : "0.004"
+         "version" : "0.005"
       },
       "MyApp::Weather::Model::LocationForecast" : {
          "file" : "lib/MyApp/Weather/Model/LocationForecast.pm",
-         "version" : "0.004"
+         "version" : "0.005"
       },
       "MyApp::Weather::Model::LocationForecast::Day" : {
          "file" : "lib/MyApp/Weather/Model/LocationForecast/Day.pm",
-         "version" : "0.004"
+         "version" : "0.005"
       },
       "MyApp::Weather::Model::LocationForecast::Download" : {
          "file" : "lib/MyApp/Weather/Model/LocationForecast/Download.pm",
-         "version" : "0.004"
+         "version" : "0.005"
       },
       "MyApp::Weather::Model::LocationForecast::Role::TimeSeries" : {
          "file" : "lib/MyApp/Weather/Model/LocationForecast/Role/TimeSeries.pm",
-         "version" : "0.004"
+         "version" : "0.005"
       },
       "MyApp::Weather::Model::LocationForecast::TimeStep" : {
          "file" : "lib/MyApp/Weather/Model/LocationForecast/TimeStep.pm",
-         "version" : "0.004"
+         "version" : "0.005"
       },
       "MyApp::Weather::Model::UserAgent" : {
          "file" : "lib/MyApp/Weather/Model/UserAgent.pm",
-         "version" : "0.004"
+         "version" : "0.005"
       },
       "MyApp::Weather::Model::WeatherBadness" : {
          "file" : "lib/MyApp/Weather/Model/WeatherBadness.pm",
-         "version" : "0.004"
+         "version" : "0.005"
       },
       "MyApp::Weather::Model::WeatherEmojis" : {
          "file" : "lib/MyApp/Weather/Model/WeatherEmojis.pm",
-         "version" : "0.004"
+         "version" : "0.005"
       },
       "MyApp::Weather::Plugin::Helpers" : {
          "file" : "lib/MyApp/Weather/Plugin/Helpers.pm",
-         "version" : "0.004"
+         "version" : "0.005"
       },
       "MyApp::Weather::View::Messages" : {
          "file" : "lib/MyApp/Weather/View/Messages.pm",
-         "version" : "0.004"
+         "version" : "0.005"
       }
    },
    "release_status" : "stable",
@@ -120,9 +120,9 @@
          "web" : "https://github.com/voegelas/MyApp-Weather"
       }
    },
-   "version" : "0.004",
+   "version" : "0.005",
    "x_generated_by_perl" : "v5.34.1",
-   "x_serialization_backend" : "Cpanel::JSON::XS version 4.30",
+   "x_serialization_backend" : "Cpanel::JSON::XS version 4.32",
    "x_spdx_expression" : "AGPL-3.0"
 }
 

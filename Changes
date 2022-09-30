@@ -1,5 +1,9 @@
 Revision history for MyApp::Weather
 
+0.005  2022-09-30 10:08:19 CEST
+
+  - Round the temperatures with int()
+
 0.004  2022-08-17 10:15:15 CEST
 
   - Fix the temperature rounding
