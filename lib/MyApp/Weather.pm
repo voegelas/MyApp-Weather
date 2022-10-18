@@ -107,7 +107,7 @@ must exist and be writable.
 
 =head3 REQUEST_BASE
 
-The base in the frontend proxy.
+The base path in the frontend proxy, e.g. /weather.  Empty by default.
 
 =head3 TEMPERATURE_UNIT
 

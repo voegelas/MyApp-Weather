@@ -63,7 +63,7 @@ The default weather forecast language.
 
 #### REQUEST_BASE
 
-The base path in the frontend proxy.
+The base path in the frontend proxy, e.g. /weather.  Empty by default.
 
 #### TEMPERATURE_UNIT
 
