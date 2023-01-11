@@ -4,7 +4,7 @@
       "Andreas V\u00f6gele <voegelas@cpan.org>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Dist::Zilla version 6.025, CPAN::Meta::Converter version 2.150010",
+   "generated_by" : "Dist::Zilla version 6.029, CPAN::Meta::Converter version 2.150010",
    "license" : [
       "agpl_3"
    ],
@@ -35,7 +35,9 @@
          "requires" : {
             "Exporter" : "0",
             "File::Spec" : "0",
+            "Geo::Location::TimeZoneFinder" : "0",
             "Mojo::Base" : "0",
+            "Mojo::Cache" : "0",
             "Mojo::Collection" : "0",
             "Mojo::Date" : "0",
             "Mojo::File" : "0",
@@ -91,6 +93,10 @@
          "file" : "lib/MyApp/Weather/Model/LocationForecast/TimeStep.pm",
          "version" : "0.005"
       },
+      "MyApp::Weather::Model::TimeZoneFinder" : {
+         "file" : "lib/MyApp/Weather/Model/TimeZoneFinder.pm",
+         "version" : "0.005"
+      },
       "MyApp::Weather::Model::UserAgent" : {
          "file" : "lib/MyApp/Weather/Model/UserAgent.pm",
          "version" : "0.005"
@@ -121,7 +127,7 @@
       }
    },
    "version" : "0.005",
-   "x_generated_by_perl" : "v5.34.1",
+   "x_generated_by_perl" : "v5.36.0",
    "x_serialization_backend" : "Cpanel::JSON::XS version 4.32",
    "x_spdx_expression" : "AGPL-3.0"
 }

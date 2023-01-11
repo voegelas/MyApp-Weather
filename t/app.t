@@ -9,10 +9,11 @@ use Test::Mojo;
 
 use Mojo::File qw(path);
 
-$ENV{CACHE_DIRECTORY}       = path('t')->child('cache');
+$ENV{CACHE_DIRECTORY}       = path(qw(t cache));
 $ENV{CACHE_DOES_NOT_EXPIRE} = 1;
 $ENV{LANG}                  = 'en_US.UTF-8';
 $ENV{TEMPERATURE_UNIT}      = 'C';
+$ENV{TIME_ZONE_DATABASE}    = path(qw(t data timezones));
 
 my $t = Test::Mojo->new('MyApp::Weather');
 $t->get_ok('/Oslo.ics')->status_is(200)

@@ -29,7 +29,8 @@ well as a longer description of the weather conditions.
 
 ## DEPENDENCIES
 
-Requires Perl 5.20, Mojolicious 9 and Role::Tiny.
+Requires Perl 5.20, Mojolicious 9, Role::Tiny and
+Geo::Location::TimeZoneFinder.
 
 ## QUERY PARAMETERS
 
@@ -68,6 +69,12 @@ The base path in the frontend proxy, e.g. /weather.  Empty by default.
 #### TEMPERATURE_UNIT
 
 The default temperature unit.
+
+#### TIME_ZONE_DATABASE
+
+The file base of a time zone database from
+https://github.com/evansiroky/timezone-boundary-builder, e.g.
+/usr/local/share/timezones/combined-shapefile.
 
 #### WEATHER_USER_AGENT
 

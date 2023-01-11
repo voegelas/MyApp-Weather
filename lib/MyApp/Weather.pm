@@ -114,6 +114,12 @@ The base path in the frontend proxy, e.g. /weather.  Empty by default.
 The default temperature unit.  Valid values are "C" for Celsius and "F" for
 Fahrenheit.
 
+=head3 TIME_ZONE_DATABASE
+
+The file base of a time zone database from
+L<https://github.com/evansiroky/timezone-boundary-builder>, e.g.
+F</usr/local/share/timezones/combined-shapefile>.
+
 =head3 WEATHER_USER_AGENT
 
 An identifying user agent string.  See

@@ -5,112 +5,23 @@ use Mojo::Base -base, -signatures;
 
 our $VERSION = '0.005';
 
-use MyApp::Weather::Model::WeatherEmojis qw($EMOJIS);
+use MyApp::Weather::Model::WeatherEmojis  qw($EMOJIS);
 use MyApp::Weather::Model::WeatherBadness qw($BADNESS $WETNESS);
-use Time::Piece;
-use Time::Seconds;
-
-has 'hash';
 
 has 'from';
-has to => sub ($self) { $self->from + $self->duration };
-has 'duration';
-has 'next_hours';
-
-sub new {
-  my $self = shift->SUPER::new(@_);
-
-  $self->_initialize;
-
-  return $self;
-}
-
-sub _initialize ($self) {
-  if (!defined $self->from) {
-    my $time = $self->hash->{time} // '1970-01-01T00:00:00Z';
-    # XXX Use the location's timezone.
-    my $from = localtime Time::Piece->strptime($time, '%FT%TZ%z')->epoch;
-    $self->from($from);
-  }
-
-  if (!defined $self->duration) {
-    my $data = $self->hash->{data} // {};
-    # Look for "next_1_hours", "next_6_hours" and "next_12_hours".
-    my $hours = ~0;
-    my $next_hours_key;
-    for my $key (keys %{$data}) {
-      if ($key =~ m{\A next_(\d+)_hours \z}xms) {
-        if ($hours > $1) {
-          $hours          = $1;
-          $next_hours_key = $key;
-        }
-      }
-    }
-    if (defined $next_hours_key) {
-      my $next_hours = $data->{$next_hours_key};
-      $self->duration(Time::Seconds->new(ONE_HOUR * $hours));
-      $self->next_hours($next_hours);
-    }
-    else {
-      $self->duration(Time::Seconds->new(0));
-      $self->next_hours({});
-    }
-  }
-
-  return;
-}
-
-sub clip_to_period ($self, $tp_from, $tp_to) {
-  my $from        = $self->from;
-  my $to          = $self->to;
-  my $has_changes = 0;
-
-  if ($from < $tp_from && $to > $tp_from) {
-    $from        = $tp_from;
-    $has_changes = 1;
-  }
-
-  if ($to > $tp_to && $from < $tp_to) {
-    $to          = $tp_to;
-    $has_changes = 1;
-  }
-
-  my $timestep = $self;
-  if ($has_changes) {
-    my $data = $self->hash->{data} // {};
-    my $hash = {
-      data => $data,
-      time => (gmtime $from->epoch)->datetime . 'Z',
-    };
-    $timestep = MyApp::Weather::Model::LocationForecast::TimeStep->new(
-      hash       => $hash,
-      from       => $from,
-      duration   => $to - $from,
-      next_hours => $self->next_hours,
-    );
-  }
-
-  return $timestep;
-}
-
-sub clip_to_day ($self, $tp) {
-  my $tp_from  = $tp->truncate(to => 'day');
-  my $tp_to    = $tp_from + ONE_DAY;
-  my $timestep = $self->clip_to_period($tp_from, $tp_to);
-
-  return $timestep;
-}
+has 'to';
+has duration => sub ($self) { $self->to - $self->from };
+has 'instant';
+has 'period';
 
 sub details ($self) {
-  my $data    = $self->hash->{data} // {};
-  my $instant = $data->{instant}    // {};
-
+  my $instant = $self->instant // {};
   return $instant->{details} // {};
 }
 
 sub symbol_code ($self) {
-  my $summary     = $self->next_hours->{summary} // {};
-  my $symbol_code = $summary->{symbol_code}      // q{};
+  my $summary     = $self->period->{summary} // {};
+  my $symbol_code = $summary->{symbol_code}  // q{};
 
   $symbol_code =~ s{_(?:day|night|polartwilight) \z}{}xms;
 
@@ -166,20 +77,18 @@ version 0.005
 
 =head1 SYNOPSIS
 
-  my $timestep =
-    MyApp::Weather::Model::LocationForecast::TimeStep->new(hash => $hash);
+  my $timestep = MyApp::Weather::Model::LocationForecast::TimeStep->new(
+    from    => $from,
+    to      => $to,
+    instant => $instant,
+    period  => $period,
+  );
 
 =head1 DESCRIPTION
 
 Wrapper class for time steps from MET Norway.
 
 =head1 ATTRIBUTES
-
-=head2 hash
-
-  my $hash = $timestep->hash;
-
-A time step decoded from JSON.
 
 =head2 from
 
@@ -201,19 +110,21 @@ exclusive.
 
 The time step's duration as a L<Time::Seconds> object.
 
+=head2 instant
+
+  my $hash = $timestep->instant;
+
+Parameters that describe the state at that exact time instant, e.g.
+air_temperature.
+
+=head2 period
+
+  my $hash = $timestep->period;
+
+Parameters that describe a period of time, e.g. air_temperature_min,
+air_temperature_min.
+
 =head1 SUBROUTINES/METHODS
-
-=head2 clip_to_period
-
-  my $new_timestep = $timestep->clip_to_period($tp_from, $tp_to);
-
-Returns a time step that is clipped to the specified time interval.
-
-=head2 clip_to_day
-
-  my $new_timestep = $timestep->clip_to_day($tp);
-
-Returns a time step that is clipped to the specified day.
 
 =head2 details
 

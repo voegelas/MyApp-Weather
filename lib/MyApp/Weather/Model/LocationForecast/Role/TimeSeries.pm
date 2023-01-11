@@ -24,13 +24,11 @@ sub available_details ($self) {
 sub _merge ($timesteps) {
   # Average the timesteps' metrics.
   my %average_for;
-  my $duration_sum = Time::Seconds->new(0);
 
   for my $timestep (@{$timesteps}) {
-    my $duration = $timestep->duration;
-
     my $details = $timestep->details;
     if (defined $details) {
+      my $duration = $timestep->duration;
       for my $metric (keys %{$details}) {
         my $value = $details->{$metric};
         if (exists $average_for{$metric}) {
@@ -43,8 +41,6 @@ sub _merge ($timesteps) {
         }
       }
     }
-
-    $duration_sum += $duration;
   }
 
   my %details;
@@ -55,26 +51,15 @@ sub _merge ($timesteps) {
     }
   }
 
-  # Create a new datapoint.
-  my $first_timestep = $timesteps->[0];
-  my $from           = $first_timestep->from;
-  my $next_hours     = $first_timestep->next_hours;
-  my $next_hours_key = 'next_' . $duration_sum->hours . '_hours';
-
-  my $hash = {
-    data => {
-      instant         => {details => \%details},
-      $next_hours_key => $next_hours,
-    },
-    time => $first_timestep->hash->{time},
-  };
-
   # Create a new timestep.
+  my $first_timestep = $timesteps->[0];
+  my $last_timestep  = $timesteps->[-1];
+
   my $timestep = MyApp::Weather::Model::LocationForecast::TimeStep->new(
-    hash       => $hash,
-    from       => $from,
-    duration   => $duration_sum,
-    next_hours => $next_hours,
+    from    => $first_timestep->from,
+    to      => $last_timestep->to,
+    instant => {details => \%details},
+    period  => $first_timestep->period,
   );
 
   return $timestep;
