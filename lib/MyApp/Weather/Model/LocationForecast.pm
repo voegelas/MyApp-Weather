@@ -6,6 +6,7 @@ use Mojo::Base -base, -signatures;
 our $VERSION = '0.006';
 
 use Mojo::Collection;
+use Mojo::Log;
 use MyApp::Weather::Model::LocationForecast::Day;
 use MyApp::Weather::Model::LocationForecast::TimeStep;
 use MyApp::Weather::Model::TimeZoneFinder;
@@ -13,6 +14,7 @@ use Time::Piece;
 use Time::Seconds;
 
 has 'hash';
+has 'log' => sub { Mojo::Log->new };
 has finder =>
     sub { state $finder = MyApp::Weather::Model::TimeZoneFinder->new };
 
@@ -69,6 +71,10 @@ sub timeseries ($self) {
     my $timeseries  = $properties->{timeseries} // [];
 
     my $tz = $self->finder->time_zone_at(lat => $lat, lon => $lon);
+    if (defined $tz) {
+        $self->log->debug("Using time zone $tz");
+    }
+
     local $ENV{TZ} = $tz if defined $tz;
 
     my @timesteps = map { $self->_get_hours($_) } @{$timeseries};

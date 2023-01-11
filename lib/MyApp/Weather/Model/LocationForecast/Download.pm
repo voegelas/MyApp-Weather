@@ -38,6 +38,8 @@ sub get_forecast_p ($self, $location, $arg_ref = {}) {
     my $log     = $arg_ref->{log} // Mojo::Log->new;
     my $referer = $arg_ref->{referer};
 
+    $log->debug("Getting forecast for $location");
+
     my $ua = $self->ua;
 
     my $headers = {'Accept-Language' => $self->lang . ';q=1.0,*;q=0.1'};
@@ -45,7 +47,7 @@ sub get_forecast_p ($self, $location, $arg_ref = {}) {
         $headers->{'Referer'} = $referer;
     }
 
-    my $place_url = sprintf $self->place_url_format, url_escape($location);
+    my $place_url = sprintf $self->place_url_format, $location;
     my $promise   = $ua->get_p($place_url, $log, $headers)->then(sub ($tx) {
         if ($tx->res->is_success) {
             my $places = $tx->res->json;
@@ -65,7 +67,9 @@ sub get_forecast_p ($self, $location, $arg_ref = {}) {
             my $hash = $tx->res->json;
             if (ref $hash eq 'HASH') {
                 return MyApp::Weather::Model::LocationForecast->new(
-                    hash => $hash);
+                    log  => $log,
+                    hash => $hash
+                );
             }
         }
         return;
