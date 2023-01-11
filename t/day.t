@@ -7,11 +7,13 @@ use Mojo::Base -strict;
 use Test::More tests => 1;
 
 BEGIN {
-  use_ok 'MyApp::Weather::Model::LocationForecast::Day';
+    use_ok 'MyApp::Weather::Model::LocationForecast::Day';
 }
 
 sub _prevalent_condition {
-  return MyApp::Weather::Model::LocationForecast::Day::_prevalent_condition(@_);
+    return
+        MyApp::Weather::Model::LocationForecast::Day::_prevalent_condition(
+        @_);
 }
 
 #is_deeply _prevalent_condition({1 => ['clearsky', 'fair'], 2 => ['rain']}),

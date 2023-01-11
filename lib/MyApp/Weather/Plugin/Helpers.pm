@@ -3,27 +3,27 @@ use Mojo::Base 'Mojolicious::Plugin', -signatures;
 
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-our $VERSION = '0.005';
+our $VERSION = '0.006';
 
 use MyApp::Weather::View::Messages qw(gettext);
 
 sub register ($self, $app, $conf) {
-  $app->helper('gettext' => sub { shift; gettext(@_) });
-  $app->helper(
-    'make_format_temperature' => sub { shift; _make_format_temperature(@_) });
+    $app->helper('gettext' => sub { shift; gettext(@_) });
+    $app->helper('make_format_temperature' =>
+            sub { shift; _make_format_temperature(@_) });
 
-  return;
+    return;
 }
 
 sub _make_round ($scale = -1) {
-  return sub ($num) { int $num + ($num > 0 ? 0.5 : -0.5) };
+    return sub ($num) { int $num + ($num > 0 ? 0.5 : -0.5) };
 }
 
 sub _make_format_temperature ($unit, $scale = -1) {
-  my $round = _make_round($scale);
-  return $unit eq 'F'
-    ? sub ($celsius) { $round->(9.0 * $celsius / 5.0 + 32.0) }
-    : sub ($celsius) { $round->($celsius) };
+    my $round = _make_round($scale);
+    return $unit eq 'F'
+        ? sub ($celsius) { $round->(9.0 * $celsius / 5.0 + 32.0) }
+        : sub ($celsius) { $round->($celsius) };
 }
 
 1;
@@ -37,7 +37,7 @@ MyApp::Weather::Plugin::Helpers - Mojolicious helpers
 
 =head1 VERSION
 
-version 0.005
+version 0.006
 
 =head1 SYNOPSIS
 
@@ -86,17 +86,17 @@ Requires L<Math::BigFloat> and L<Mojolicious>.
 
 None.
 
-=head1 AUTHOR
-
-Andreas Vögele E<lt>andreas@andreasvoegele.comE<gt>
-
 =head1 BUGS AND LIMITATIONS
 
 None known.
 
+=head1 AUTHOR
+
+Andreas Vögele E<lt>andreas@andreasvoegele.comE<gt>
+
 =head1 LICENSE AND COPYRIGHT
 
-Copyright (C) 2022 Andreas Vögele
+Copyright (C) 2023 Andreas Vögele
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU Affero General Public License as published by the Free

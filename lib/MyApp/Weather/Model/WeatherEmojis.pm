@@ -3,54 +3,54 @@ use Mojo::Base -strict;
 
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-our $VERSION = '0.005';
+our $VERSION = '0.006';
 
 use Exporter qw(import);
 
 our @EXPORT_OK = qw($EMOJIS);
 
 our $EMOJIS = {
-  clearsky                     => '☀️',
-  fair                         => '🌤',
-  partlycloudy                 => '⛅',
-  cloudy                       => '☁',
-  fog                          => '🌫',
-  lightrainshowers             => '🌦',
-  lightrain                    => '🌦',
-  rainshowers                  => '💧',
-  rain                         => '💧',
-  heavyrainshowers             => '💧💧',
-  heavyrain                    => '💧💧',
-  lightrainshowersandthunder   => '🌦⚡',
-  lightrainandthunder          => '🌦⚡',
-  rainshowersandthunder        => '💧⚡',
-  rainandthunder               => '💧⚡',
-  heavyrainshowersandthunder   => '💧💧⚡',
-  heavyrainandthunder          => '💧💧⚡',
-  lightsleetshowers            => '🌨',
-  lightsleet                   => '🌨',
-  sleetshowers                 => '🌨',
-  sleet                        => '🌨',
-  heavysleetshowers            => '🌨🌨',
-  heavysleet                   => '🌨🌨',
-  lightsleetshowersandthunder  => '🌨⚡',
-  lightsleetandthunder         => '🌨⚡',
-  sleetshowersandthunder       => '🌨⚡',
-  sleetandthunder              => '🌨⚡',
-  heavysleetshowersandthunder  => '🌨🌨⚡',
-  heavysleetandthunder         => '🌨🌨⚡',
-  lightsnowshowers             => '❄',
-  lightsnow                    => '❄',
-  snowshowers                  => '❄',
-  snow                         => '❄',
-  heavysnowshowers             => '❄❄',
-  heavysnow                    => '❄❄',
-  lightsnowshowersandthunder   => '❄⚡',
-  lightsnowandthunder          => '❄⚡',
-  snowshowersandthunder        => '❄⚡',
-  snowandthunder               => '❄⚡',
-  heavysnowshowersandthunder   => '❄❄⚡',
-  heavysnowandthunder          => '❄❄⚡',
+    clearsky                    => '☀️',
+    fair                        => '🌤',
+    partlycloudy                => '⛅',
+    cloudy                      => '☁',
+    fog                         => '🌫',
+    lightrainshowers            => '🌦',
+    lightrain                   => '🌦',
+    rainshowers                 => '💧',
+    rain                        => '💧',
+    heavyrainshowers            => '💧💧',
+    heavyrain                   => '💧💧',
+    lightrainshowersandthunder  => '🌦⚡',
+    lightrainandthunder         => '🌦⚡',
+    rainshowersandthunder       => '💧⚡',
+    rainandthunder              => '💧⚡',
+    heavyrainshowersandthunder  => '💧💧⚡',
+    heavyrainandthunder         => '💧💧⚡',
+    lightsleetshowers           => '🌨',
+    lightsleet                  => '🌨',
+    sleetshowers                => '🌨',
+    sleet                       => '🌨',
+    heavysleetshowers           => '🌨🌨',
+    heavysleet                  => '🌨🌨',
+    lightsleetshowersandthunder => '🌨⚡',
+    lightsleetandthunder        => '🌨⚡',
+    sleetshowersandthunder      => '🌨⚡',
+    sleetandthunder             => '🌨⚡',
+    heavysleetshowersandthunder => '🌨🌨⚡',
+    heavysleetandthunder        => '🌨🌨⚡',
+    lightsnowshowers            => '❄',
+    lightsnow                   => '❄',
+    snowshowers                 => '❄',
+    snow                        => '❄',
+    heavysnowshowers            => '❄❄',
+    heavysnow                   => '❄❄',
+    lightsnowshowersandthunder  => '❄⚡',
+    lightsnowandthunder         => '❄⚡',
+    snowshowersandthunder       => '❄⚡',
+    snowandthunder              => '❄⚡',
+    heavysnowshowersandthunder  => '❄❄⚡',
+    heavysnowandthunder         => '❄❄⚡',
 };
 
 1;
@@ -64,7 +64,7 @@ MyApp::Weather::Model::WeatherEmojis - Weather emojis
 
 =head1 VERSION
 
-version 0.005
+version 0.006
 
 =head1 SYNOPSIS
 
@@ -95,17 +95,17 @@ Requires L<Exporter> and L<Mojolicious>.
 
 None.
 
-=head1 AUTHOR
-
-Andreas Vögele E<lt>andreas@andreasvoegele.comE<gt>
-
 =head1 BUGS AND LIMITATIONS
 
 None known.
 
+=head1 AUTHOR
+
+Andreas Vögele E<lt>andreas@andreasvoegele.comE<gt>
+
 =head1 LICENSE AND COPYRIGHT
 
-Copyright (C) 2022 Andreas Vögele
+Copyright (C) 2023 Andreas Vögele
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU Affero General Public License as published by the Free

@@ -3,7 +3,7 @@ use Mojo::Base -base, -signatures;
 
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-our $VERSION = '0.005';
+our $VERSION = '0.006';
 
 use File::Spec;
 use Mojo::Log;
@@ -16,60 +16,62 @@ has cache_dir => File::Spec->tmpdir;
 has lang      => 'en';
 
 has forecast_url_format =>
-  'https://api.met.no/weatherapi/locationforecast/2.0/complete?lat=%.4f&lon=%.4f';
+    'https://api.met.no/weatherapi/locationforecast/2.0/complete?lat=%.4f&lon=%.4f';
 
 has place_url_format =>
-  'https://nominatim.openstreetmap.org/search?city=%s&format=jsonv2&limit=1';
+    'https://nominatim.openstreetmap.org/search?city=%s&format=jsonv2&limit=1';
 
 has ua => sub ($self) {
-  MyApp::Weather::Model::UserAgent->new(
-    agent           => $self->agent,
-    cache_dir       => $self->cache_dir,
-    override_expire => sub ($url) {
-      return ~0 if index($url, '/nominatim.openstreetmap.org/') >= 0;
-      return 7_200 + int rand 3_600 if index($url, '/locationforecast/') >= 0;
-      return 0;
-    },
-  );
+    MyApp::Weather::Model::UserAgent->new(
+        agent           => $self->agent,
+        cache_dir       => $self->cache_dir,
+        override_expire => sub ($url) {
+            return ~0 if index($url, '/nominatim.openstreetmap.org/') >= 0;
+            return 7_200 + int rand 3_600
+                if index($url, '/locationforecast/') >= 0;
+            return 0;
+        },
+    );
 };
 
 sub get_forecast_p ($self, $location, $arg_ref = {}) {
-  my $log     = $arg_ref->{log} // Mojo::Log->new;
-  my $referer = $arg_ref->{referer};
+    my $log     = $arg_ref->{log} // Mojo::Log->new;
+    my $referer = $arg_ref->{referer};
 
-  my $ua = $self->ua;
+    my $ua = $self->ua;
 
-  my $headers = {'Accept-Language' => $self->lang . ';q=1.0,*;q=0.1'};
-  if (defined $referer) {
-    $headers->{'Referer'} = $referer;
-  }
+    my $headers = {'Accept-Language' => $self->lang . ';q=1.0,*;q=0.1'};
+    if (defined $referer) {
+        $headers->{'Referer'} = $referer;
+    }
 
-  my $place_url = sprintf $self->place_url_format, url_escape($location);
-  my $promise   = $ua->get_p($place_url, $log, $headers)->then(sub ($tx) {
-    if ($tx->res->is_success) {
-      my $places = $tx->res->json;
-      if (ref $places eq 'ARRAY') {
-        my $place = $places->[0];
-        if (defined $place) {
-          my $forecast_url = sprintf $self->forecast_url_format,
-            url_escape($place->{lat}),
-            url_escape($place->{lon});
-          return $ua->get_p($forecast_url, $log);
+    my $place_url = sprintf $self->place_url_format, url_escape($location);
+    my $promise   = $ua->get_p($place_url, $log, $headers)->then(sub ($tx) {
+        if ($tx->res->is_success) {
+            my $places = $tx->res->json;
+            if (ref $places eq 'ARRAY') {
+                my $place = $places->[0];
+                if (defined $place) {
+                    my $forecast_url = sprintf $self->forecast_url_format,
+                        url_escape($place->{lat}),
+                        url_escape($place->{lon});
+                    return $ua->get_p($forecast_url, $log);
+                }
+            }
         }
-      }
-    }
-    return;
-  })->then(sub ($tx) {
-    if ($tx->res->is_success) {
-      my $hash = $tx->res->json;
-      if (ref $hash eq 'HASH') {
-        return MyApp::Weather::Model::LocationForecast->new(hash => $hash);
-      }
-    }
-    return;
-  });
+        return;
+    })->then(sub ($tx) {
+        if ($tx->res->is_success) {
+            my $hash = $tx->res->json;
+            if (ref $hash eq 'HASH') {
+                return MyApp::Weather::Model::LocationForecast->new(
+                    hash => $hash);
+            }
+        }
+        return;
+    });
 
-  return $promise;
+    return $promise;
 }
 
 1;
@@ -83,7 +85,7 @@ MyApp::Weather::Model::LocationForecast::Download - Download weather forecasts
 
 =head1 VERSION
 
-version 0.005
+version 0.006
 
 =head1 SYNOPSIS
 
@@ -143,17 +145,17 @@ Requires L<File::Spec> and L<Mojolicious>.
 
 None.
 
-=head1 AUTHOR
-
-Andreas Vögele E<lt>andreas@andreasvoegele.comE<gt>
-
 =head1 BUGS AND LIMITATIONS
 
 None known.
 
+=head1 AUTHOR
+
+Andreas Vögele E<lt>andreas@andreasvoegele.comE<gt>
+
 =head1 LICENSE AND COPYRIGHT
 
-Copyright (C) 2022 Andreas Vögele
+Copyright (C) 2023 Andreas Vögele
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU Affero General Public License as published by the Free

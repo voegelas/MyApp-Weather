@@ -1,5 +1,11 @@
 Revision history for MyApp::Weather
 
+0.006  2023-01-11 10:58:44 CET
+
+  - Use the location's local time
+  - Simplify the TimeStep class
+  - Use cache directories instead of single files
+
 0.005  2022-09-30 10:08:19 CEST
 
   - Round the temperatures with int()

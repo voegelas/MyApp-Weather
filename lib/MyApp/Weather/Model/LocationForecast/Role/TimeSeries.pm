@@ -3,91 +3,91 @@ use Mojo::Base -role, -signatures;
 
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-our $VERSION = '0.005';
+our $VERSION = '0.006';
 
 use Mojo::Collection;
 
 sub available_details ($self) {
-  my %keys;
+    my %keys;
 
-  for my $timestep (@{$self}) {
-    if (my $details = $timestep->details) {
-      for my $key (keys %{$details}) {
-        $keys{$key} = 1;
-      }
+    for my $timestep (@{$self}) {
+        if (my $details = $timestep->details) {
+            for my $key (keys %{$details}) {
+                $keys{$key} = 1;
+            }
+        }
     }
-  }
 
-  return Mojo::Collection->new(sort keys %keys);
+    return Mojo::Collection->new(sort keys %keys);
 }
 
 sub _merge ($timesteps) {
-  # Average the timesteps' metrics.
-  my %average_for;
+    # Average the timesteps' metrics.
+    my %average_for;
 
-  for my $timestep (@{$timesteps}) {
-    my $details = $timestep->details;
-    if (defined $details) {
-      my $duration = $timestep->duration;
-      for my $metric (keys %{$details}) {
-        my $value = $details->{$metric};
-        if (exists $average_for{$metric}) {
-          my $average = $average_for{$metric};
-          $average->[0] += $value * $duration;
-          $average->[1] += $duration;
+    for my $timestep (@{$timesteps}) {
+        my $details = $timestep->details;
+        if (defined $details) {
+            my $duration = $timestep->duration;
+            for my $metric (keys %{$details}) {
+                my $value = $details->{$metric};
+                if (exists $average_for{$metric}) {
+                    my $average = $average_for{$metric};
+                    $average->[0] += $value * $duration;
+                    $average->[1] += $duration;
+                }
+                else {
+                    $average_for{$metric} = [$value * $duration, $duration];
+                }
+            }
         }
-        else {
-          $average_for{$metric} = [$value * $duration, $duration];
+    }
+
+    my %details;
+    for my $metric (keys %average_for) {
+        my ($numerator, $denominator) = @{$average_for{$metric}};
+        if ($denominator > 0) {
+            $details{$metric} = $numerator / $denominator;
         }
-      }
     }
-  }
 
-  my %details;
-  for my $metric (keys %average_for) {
-    my ($numerator, $denominator) = @{$average_for{$metric}};
-    if ($denominator > 0) {
-      $details{$metric} = $numerator / $denominator;
-    }
-  }
+    # Create a new timestep.
+    my $first_timestep = $timesteps->[0];
+    my $last_timestep  = $timesteps->[-1];
 
-  # Create a new timestep.
-  my $first_timestep = $timesteps->[0];
-  my $last_timestep  = $timesteps->[-1];
+    my $timestep = MyApp::Weather::Model::LocationForecast::TimeStep->new(
+        from    => $first_timestep->from,
+        to      => $last_timestep->to,
+        instant => {details => \%details},
+        period  => $first_timestep->period,
+    );
 
-  my $timestep = MyApp::Weather::Model::LocationForecast::TimeStep->new(
-    from    => $first_timestep->from,
-    to      => $last_timestep->to,
-    instant => {details => \%details},
-    period  => $first_timestep->period,
-  );
-
-  return $timestep;
+    return $timestep;
 }
 
 sub _has_similar_temperature ($ts1, $ts2) {
-  return $ts1->symbol_code eq $ts2->symbol_code
-    && abs($ts1->air_temperature - $ts2->air_temperature) <= 3.0;
+    return $ts1->symbol_code eq $ts2->symbol_code
+        && abs($ts1->air_temperature - $ts2->air_temperature) <= 3.0;
 }
 
 sub merge_timesteps ($self, $is_similar = \&_has_similar_temperature) {
-  my @timesteps;
+    my @timesteps;
 
-  my @similar_timesteps;
-  for my $timestep (@{$self}) {
-    if (@similar_timesteps > 0) {
-      if (!$is_similar->($timestep, $similar_timesteps[0])) {
-        push @timesteps, _merge(\@similar_timesteps);
-        @similar_timesteps = ();
-      }
+    my @similar_timesteps;
+    for my $timestep (@{$self}) {
+        if (@similar_timesteps > 0) {
+            if (!$is_similar->($timestep, $similar_timesteps[0])) {
+                push @timesteps, _merge(\@similar_timesteps);
+                @similar_timesteps = ();
+            }
+        }
+        push @similar_timesteps, $timestep;
     }
-    push @similar_timesteps, $timestep;
-  }
-  if (@similar_timesteps > 0) {
-    push @timesteps, _merge(\@similar_timesteps);
-  }
+    if (@similar_timesteps > 0) {
+        push @timesteps, _merge(\@similar_timesteps);
+    }
 
-  return $self->new(@timesteps);
+    return $self->new(@timesteps);
 }
 
 1;
@@ -101,7 +101,7 @@ MyApp::Weather::Model::LocationForecast::Role::TimeSeries - Mojo::Collection rol
 
 =head1 VERSION
 
-version 0.005
+version 0.006
 
 =head1 SYNOPSIS
 
@@ -146,17 +146,17 @@ Requires L<Mojolicious> and L<Role::Tiny>.
 
 None.
 
-=head1 AUTHOR
-
-Andreas Vögele E<lt>andreas@andreasvoegele.comE<gt>
-
 =head1 BUGS AND LIMITATIONS
 
 None known.
 
+=head1 AUTHOR
+
+Andreas Vögele E<lt>andreas@andreasvoegele.comE<gt>
+
 =head1 LICENSE AND COPYRIGHT
 
-Copyright (C) 2022 Andreas Vögele
+Copyright (C) 2023 Andreas Vögele
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU Affero General Public License as published by the Free

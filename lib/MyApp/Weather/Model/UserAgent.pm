@@ -3,7 +3,7 @@ use Mojo::Base 'Mojo::UserAgent', -signatures;
 
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-our $VERSION = '0.005';
+our $VERSION = '0.006';
 
 use File::Spec;
 use Mojo::Date;
@@ -16,162 +16,162 @@ has agent           => 'Mojolicious (Perl)';
 has cache_dir       => File::Spec->tmpdir;
 has max_redirects   => sub { $ENV{MOJO_MAX_REDIRECTS} // 4 };
 has override_expire => sub {
-  sub ($url) { return 0 };
+    sub ($url) { return 0 };
 };
 
 sub new {
-  my $self = shift->SUPER::new(@_);
+    my $self = shift->SUPER::new(@_);
 
-  $self->transactor->name($self->agent);
+    $self->transactor->name($self->agent);
 
-  return $self;
+    return $self;
 }
 
 sub _body_file ($self, $dir) {
-  return path($dir, 'body.json');
+    return path($dir, 'body.json');
 }
 
 sub _meta_file ($self, $dir) {
-  return path($dir, 'meta.json');
+    return path($dir, 'meta.json');
 }
 
 sub read_cache ($self, $dir) {
-  my $tx;
+    my $tx;
 
-  if (-d $dir) {
-    my $body = eval { $self->_body_file($dir)->slurp };
-    my $meta = eval { $self->_meta_file($dir)->slurp };
-    if (defined $body && defined $meta) {
-      my $data = decode_json($meta);
-      $tx = Mojo::Transaction::HTTP->new;
-      my $request  = $tx->req;
-      my $response = $tx->res;
-      $request->url->parse($data->{url});
-      $response->code(200);
-      $response->headers->from_hash($data->{headers});
-      $response->headers->header('X-Cache', $dir);
-      $response->body($body);
+    if (-d $dir) {
+        my $body = eval { $self->_body_file($dir)->slurp };
+        my $meta = eval { $self->_meta_file($dir)->slurp };
+        if (defined $body && defined $meta) {
+            my $data = decode_json($meta);
+            $tx = Mojo::Transaction::HTTP->new;
+            my $request  = $tx->req;
+            my $response = $tx->res;
+            $request->url->parse($data->{url});
+            $response->code(200);
+            $response->headers->from_hash($data->{headers});
+            $response->headers->header('X-Cache', $dir);
+            $response->body($body);
+        }
     }
-  }
 
-  return $tx;
+    return $tx;
 }
 
 sub write_cache ($self, $dir, $tx) {
-  my $ok       = 0;
-  my $request  = $tx->req;
-  my $response = $tx->res;
-  my $data     = {
-    url     => $request->url->to_string,
-    headers => $response->headers->to_hash,
-  };
-  my $meta = encode_json($data);
+    my $ok       = 0;
+    my $request  = $tx->req;
+    my $response = $tx->res;
+    my $data     = {
+        url     => $request->url->to_string,
+        headers => $response->headers->to_hash,
+    };
+    my $meta = encode_json($data);
 
-  if (!-d $dir) {
-    mkdir $dir;
-  }
-  if (-d $dir) {
-    if ( eval { $self->_body_file($dir)->spurt($response->body) }
-      && eval { $self->_meta_file($dir)->spurt($meta) }) {
-      $ok = 1;
+    if (!-d $dir) {
+        mkdir $dir;
     }
-  }
+    if (-d $dir) {
+        if (   eval { $self->_body_file($dir)->spurt($response->body) }
+            && eval { $self->_meta_file($dir)->spurt($meta) }) {
+            $ok = 1;
+        }
+    }
 
-  return $ok;
+    return $ok;
 }
 
 sub last_modified ($self, $filename) {
-  my $mtime;
+    my $mtime;
 
-  my @stat = stat $filename;
-  if (@stat) {
-    $mtime = $stat[9];
-  }
+    my @stat = stat $filename;
+    if (@stat) {
+        $mtime = $stat[9];
+    }
 
-  return $mtime;
+    return $mtime;
 }
 
 sub file_age ($self, $filename) {
-  my $age = ~0;
+    my $age = ~0;
 
-  my $mtime = $self->last_modified($filename);
-  if (defined $mtime) {
-    $age = time - $mtime;
-  }
+    my $mtime = $self->last_modified($filename);
+    if (defined $mtime) {
+        $age = time - $mtime;
+    }
 
-  return $age;
+    return $age;
 }
 
 sub has_expired ($self, $cache_tx) {
-  my $has_expired = 0;
+    my $has_expired = 0;
 
-  # Never expire when the module is tested.
-  return 0 if $ENV{CACHE_DOES_NOT_EXPIRE};
+    # Never expire when the module is tested.
+    return 0 if $ENV{CACHE_DOES_NOT_EXPIRE};
 
-  my $request  = $cache_tx->req;
-  my $response = $cache_tx->res;
-  my $url      = $request->url->to_string;
-  my $dir      = $response->headers->header('X-Cache');
-  if ($self->file_age($dir) > $self->override_expire->($url)) {
-    my $expires = $response->headers->expires;
-    if (defined $expires) {
-      my $expiration_time = eval { Mojo::Date->new($expires) };
-      if (defined $expiration_time) {
-        if (time >= $expiration_time->epoch) {
-          $has_expired = 1;
+    my $request  = $cache_tx->req;
+    my $response = $cache_tx->res;
+    my $url      = $request->url->to_string;
+    my $dir      = $response->headers->header('X-Cache');
+    if ($self->file_age($dir) > $self->override_expire->($url)) {
+        my $expires = $response->headers->expires;
+        if (defined $expires) {
+            my $expiration_time = eval { Mojo::Date->new($expires) };
+            if (defined $expiration_time) {
+                if (time >= $expiration_time->epoch) {
+                    $has_expired = 1;
+                }
+            }
         }
-      }
     }
-  }
 
-  return $has_expired;
+    return $has_expired;
 }
 
 sub get_p ($self, $url, $log, @args) {
-  my $promise;
+    my $promise;
 
-  my $cache_tx;
-  my $cache_time;
+    my $cache_tx;
+    my $cache_time;
 
-  # Check if a cached response exists.
-  my $dir = path($self->cache_dir, sha1_sum($url) . '2');
-  $cache_tx = $self->read_cache($dir);
-  if (defined $cache_tx) {
-    if ($self->has_expired($cache_tx)) {
-      $cache_time = Mojo::Date->new($self->last_modified($dir));
-    }
-    else {
-      $log->debug("Cache hit for $url");
-      $promise = Mojo::Promise->resolve($cache_tx);
-    }
-  }
-
-  if (!defined $promise) {
-    my $remote_tx = $self->build_tx(GET => $url, @args);
-    if (defined $cache_time) {
-      $remote_tx->req->headers->header('If-Modified-Since',
-        $cache_time->to_string);
-    }
-    $promise = $self->start_p($remote_tx)->then(sub ($tx) {
-      my $response = $tx->res;
-      if ($response->is_error) {
-        $log->error("Could not fetch $url");
-      }
-      if ($response->is_success) {
-        $log->debug("Fetched $url");
-        if (!$self->write_cache($dir, $tx)) {
-          $log->error("Could not cache $url");
+    # Check if a cached response exists.
+    my $dir = path($self->cache_dir, sha1_sum($url) . '2');
+    $cache_tx = $self->read_cache($dir);
+    if (defined $cache_tx) {
+        if ($self->has_expired($cache_tx)) {
+            $cache_time = Mojo::Date->new($self->last_modified($dir));
         }
-      }
-      elsif (defined $cache_tx) {
-        $log->debug("Cache hit for $url");
-        $tx = $cache_tx;
-      }
-      return $tx;
-    });
-  }
+        else {
+            $log->debug("Cache hit for $url");
+            $promise = Mojo::Promise->resolve($cache_tx);
+        }
+    }
 
-  return $promise;
+    if (!defined $promise) {
+        my $remote_tx = $self->build_tx(GET => $url, @args);
+        if (defined $cache_time) {
+            $remote_tx->req->headers->header('If-Modified-Since',
+                $cache_time->to_string);
+        }
+        $promise = $self->start_p($remote_tx)->then(sub ($tx) {
+            my $response = $tx->res;
+            if ($response->is_error) {
+                $log->error("Could not fetch $url");
+            }
+            if ($response->is_success) {
+                $log->debug("Fetched $url");
+                if (!$self->write_cache($dir, $tx)) {
+                    $log->error("Could not cache $url");
+                }
+            }
+            elsif (defined $cache_tx) {
+                $log->debug("Cache hit for $url");
+                $tx = $cache_tx;
+            }
+            return $tx;
+        });
+    }
+
+    return $promise;
 }
 
 1;
@@ -185,7 +185,7 @@ MyApp::Weather::Model::UserAgent - Caching HTTP user agent
 
 =head1 VERSION
 
-version 0.005
+version 0.006
 
 =head1 SYNOPSIS
 
@@ -301,17 +301,17 @@ Requires L<File::Spec> and L<Mojolicious>.
 
 None.
 
-=head1 AUTHOR
-
-Andreas Vögele E<lt>andreas@andreasvoegele.comE<gt>
-
 =head1 BUGS AND LIMITATIONS
 
 None known.
 
+=head1 AUTHOR
+
+Andreas Vögele E<lt>andreas@andreasvoegele.comE<gt>
+
 =head1 LICENSE AND COPYRIGHT
 
-Copyright (C) 2022 Andreas Vögele
+Copyright (C) 2023 Andreas Vögele
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU Affero General Public License as published by the Free

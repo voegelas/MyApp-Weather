@@ -3,36 +3,36 @@ use Mojo::Base -base, -signatures;
 
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-our $VERSION = '0.005';
+our $VERSION = '0.006';
 
 use Mojo::Cache;
 
 has finder => sub {
-  my $finder;
-  my $file_base = $ENV{TIME_ZONE_DATABASE};
-  if (defined $file_base) {
-    $finder = eval {
-      require Geo::Location::TimeZoneFinder;
-      Geo::Location::TimeZoneFinder->new(file_base => $file_base);
-    };
-  }
-  return $finder;
+    my $finder;
+    my $file_base = $ENV{TIME_ZONE_DATABASE};
+    if (defined $file_base) {
+        $finder = eval {
+            require Geo::Location::TimeZoneFinder;
+            Geo::Location::TimeZoneFinder->new(file_base => $file_base);
+        };
+    }
+    return $finder;
 };
 has cache => sub { Mojo::Cache->new };
 
 sub time_zone_at ($self, %position) {
-  my $lat = $position{lat};
-  my $lon = $position{lon};
-  my $key = "$lat,$lon";
-  my $tz  = $self->cache->get($key);
-  if (!defined $tz) {
-    my $finder = $self->finder;
-    if (defined $finder) {
-      $tz = $finder->time_zone_at(lat => $lat, lon => $lon);
-      $self->cache->set($key, $tz);
+    my $lat = $position{lat};
+    my $lon = $position{lon};
+    my $key = "$lat,$lon";
+    my $tz  = $self->cache->get($key);
+    if (!defined $tz) {
+        my $finder = $self->finder;
+        if (defined $finder) {
+            $tz = $finder->time_zone_at(lat => $lat, lon => $lon);
+            $self->cache->set($key, $tz);
+        }
     }
-  }
-  return $tz;
+    return $tz;
 }
 
 1;
@@ -46,7 +46,7 @@ MyApp::Weather::Model::TimeZoneFinder - Find a location's time zone
 
 =head1 VERSION
 
-version 0.005
+version 0.006
 
 =head1 SYNOPSIS
 
@@ -83,7 +83,7 @@ F</usr/local/share/timezones/combined-shapefile>.
 
 =head1 DEPENDENCIES
 
-Requires L<Mojolicious> and L<Geo::Location::TimeZoneFinder>.
+Requires L<Geo::Location::TimeZoneFinder> and L<Mojolicious>.
 
 =head1 INCOMPATIBILITIES
 
@@ -99,7 +99,7 @@ Andreas Vögele E<lt>andreas@andreasvoegele.comE<gt>
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright (C) 2022 Andreas Vögele
+Copyright (C) 2023 Andreas Vögele
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU Affero General Public License as published by the Free

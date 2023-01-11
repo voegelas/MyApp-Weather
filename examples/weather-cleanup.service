@@ -5,5 +5,5 @@ Description=Remove outdated weather forecasts
 Type=oneshot
 User=weather
 CacheDirectory=weather
-ExecStart=/usr/bin/find $CACHE_DIRECTORY -mindepth 1 -type f -atime +30 -print -delete
+ExecStart=/usr/bin/find $CACHE_DIRECTORY -mindepth 1 -atime +30 -print -delete
 IOSchedulingClass=idle

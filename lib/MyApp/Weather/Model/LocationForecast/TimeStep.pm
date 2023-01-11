@@ -3,7 +3,7 @@ use Mojo::Base -base, -signatures;
 
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-our $VERSION = '0.005';
+our $VERSION = '0.006';
 
 use MyApp::Weather::Model::WeatherEmojis  qw($EMOJIS);
 use MyApp::Weather::Model::WeatherBadness qw($BADNESS $WETNESS);
@@ -15,51 +15,51 @@ has 'instant';
 has 'period';
 
 sub details ($self) {
-  my $instant = $self->instant // {};
-  return $instant->{details} // {};
+    my $instant = $self->instant // {};
+    return $instant->{details} // {};
 }
 
 sub symbol_code ($self) {
-  my $summary     = $self->period->{summary} // {};
-  my $symbol_code = $summary->{symbol_code}  // q{};
+    my $summary     = $self->period->{summary} // {};
+    my $symbol_code = $summary->{symbol_code}  // q{};
 
-  $symbol_code =~ s{_(?:day|night|polartwilight) \z}{}xms;
+    $symbol_code =~ s{_(?:day|night|polartwilight) \z}{}xms;
 
-  # Fix typos.
-  if ($symbol_code eq 'lightssleetshowersandthunder') {
-    $symbol_code = 'lightsleetshowersandthunder';
-  }
-  elsif ($symbol_code eq 'lightssnowshowersandthunder') {
-    $symbol_code = 'lightsnowshowersandthunder';
-  }
+    # Fix typos.
+    if ($symbol_code eq 'lightssleetshowersandthunder') {
+        $symbol_code = 'lightsleetshowersandthunder';
+    }
+    elsif ($symbol_code eq 'lightssnowshowersandthunder') {
+        $symbol_code = 'lightsnowshowersandthunder';
+    }
 
-  return $symbol_code;
+    return $symbol_code;
 }
 
 sub emojis ($self) {
-  return $EMOJIS->{$self->symbol_code} // q{};
+    return $EMOJIS->{$self->symbol_code} // q{};
 }
 
 sub badness ($self) {
-  return $BADNESS->{$self->symbol_code} // 0;
+    return $BADNESS->{$self->symbol_code} // 0;
 }
 
 sub wetness ($self) {
-  return $WETNESS->{$self->symbol_code} // 0;
+    return $WETNESS->{$self->symbol_code} // 0;
 }
 
 sub AUTOLOAD ($self) {
-  my $value;
+    my $value;
 
-  our $AUTOLOAD;
-  if ($AUTOLOAD =~ m{:: ([^:]*?) \z}xms) {
-    my $details = $self->details;
-    if (exists $details->{$1}) {
-      $value = $details->{$1};
+    our $AUTOLOAD;
+    if ($AUTOLOAD =~ m{:: ([^:]*?) \z}xms) {
+        my $details = $self->details;
+        if (exists $details->{$1}) {
+            $value = $details->{$1};
+        }
     }
-  }
 
-  return $value;
+    return $value;
 }
 
 1;
@@ -73,7 +73,7 @@ MyApp::Weather::Model::LocationForecast::TimeStep - Data point in weather foreca
 
 =head1 VERSION
 
-version 0.005
+version 0.006
 
 =head1 SYNOPSIS
 
@@ -268,24 +268,23 @@ None.
 
 =head1 DEPENDENCIES
 
-Requires L<Mojolicious>, L<Time::Piece> and L<Time::Seconds>.
+Requires L<Mojolicious>.
 
 =head1 INCOMPATIBILITIES
 
 None.
 
+=head1 BUGS AND LIMITATIONS
+
+None known.
+
 =head1 AUTHOR
 
 Andreas Vögele E<lt>andreas@andreasvoegele.comE<gt>
 
-=head1 BUGS AND LIMITATIONS
-
-Currently, the local time zone is used to create L<Time::Piece> objects
-instead of the location's time zone.
-
 =head1 LICENSE AND COPYRIGHT
 
-Copyright (C) 2022 Andreas Vögele
+Copyright (C) 2023 Andreas Vögele
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU Affero General Public License as published by the Free

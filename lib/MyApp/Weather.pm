@@ -3,7 +3,7 @@ use Mojo::Base 'Mojolicious', -signatures;
 
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-our $VERSION = '0.005';
+our $VERSION = '0.006';
 
 use Mojo::File qw(curfile);
 use Mojo::Home;
@@ -11,45 +11,46 @@ use Mojo::Home;
 has default_location => 'Oslo';
 
 sub startup ($app) {
-  # Switch to installable directories.
-  $app->home(Mojo::Home->new(curfile->sibling('Weather')));
-  $app->static->paths->[0]   = $app->home->child('public');
-  $app->renderer->paths->[0] = $app->home->child('templates');
+    # Switch to installable directories.
+    $app->home(Mojo::Home->new(curfile->sibling('Weather')));
+    $app->static->paths->[0]   = $app->home->child('public');
+    $app->renderer->paths->[0] = $app->home->child('templates');
 
-  # Use random secrets since this application doesn't use session cookies.
-  $app->secrets([rand]);
+    # Use random secrets since this application doesn't use session cookies.
+    $app->secrets([rand]);
 
-  # Map the file extension "ics" to the MIME type "text/calendar".
-  $app->types->type(ics => 'text/calendar');
+    # Map the file extension "ics" to the MIME type "text/calendar".
+    $app->types->type(ics => 'text/calendar');
 
-  # Register helpers and hooks.
-  $app->plugin('MyApp::Weather::Plugin::Helpers');
-  $app->hook(before_dispatch => \&_before_dispatch);
+    # Register helpers and hooks.
+    $app->plugin('MyApp::Weather::Plugin::Helpers');
+    $app->hook(before_dispatch => \&_before_dispatch);
 
-  my $r = $app->routes;
+    my $r = $app->routes;
 
-  # Route requests like "/Oslo.ics" to MyApp::Weather::Controller::Location.
-  $r->get('/:location' => [format => [qw(html ics)]])->to(
-    'Location#calendar',
-    format   => 'ics',
-    location => $app->default_location,
-  );
+    # Route requests like "/Oslo.ics" to MyApp::Weather::Controller::Location.
+    $r->get('/:location' => [format => [qw(html ics)]])->to(
+        'Location#calendar',
+        format   => 'ics',
+        location => $app->default_location,
+    );
 
-  return;
+    return;
 }
 
 sub _before_dispatch ($c) {
-  if (state $base = $ENV{REQUEST_BASE}) {
-    my $url = Mojo::URL->new($base);
-    if ($url->host) {
-      $c->req->url->base($url);
+    # Set the base path in the frontend proxy.
+    if (state $base = $ENV{REQUEST_BASE}) {
+        my $url = Mojo::URL->new($base);
+        if ($url->host) {
+            $c->req->url->base($url);
+        }
+        else {
+            $c->req->url->base->path($url->path);
+        }
     }
-    else {
-      $c->req->url->base->path($url->path);
-    }
-  }
 
-  return;
+    return;
 }
 
 1;
@@ -63,7 +64,7 @@ MyApp::Weather - Weather forecasts in the iCalendar data format
 
 =head1 VERSION
 
-version 0.005
+version 0.006
 
 =head1 SYNOPSIS
 
@@ -135,17 +136,17 @@ Requires L<Mojolicious>.
 
 None.
 
-=head1 AUTHOR
-
-Andreas Vögele E<lt>andreas@andreasvoegele.comE<gt>
-
 =head1 BUGS AND LIMITATIONS
 
 None known.
 
+=head1 AUTHOR
+
+Andreas Vögele E<lt>andreas@andreasvoegele.comE<gt>
+
 =head1 LICENSE AND COPYRIGHT
 
-Copyright (C) 2022 Andreas Vögele
+Copyright (C) 2023 Andreas Vögele
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU Affero General Public License as published by the Free
