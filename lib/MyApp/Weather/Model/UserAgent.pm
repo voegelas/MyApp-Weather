@@ -27,44 +27,57 @@ sub new {
   return $self;
 }
 
-sub cache_file ($self, $url) {
-  my $digest  = sha1_sum($url);
-  my $version = 1;
-  my $path    = path($self->cache_dir)->child($digest . $version);
-
-  return $path;
+sub _body_file ($self, $dir) {
+  return path($dir, 'body.json');
 }
 
-sub read_cache ($self, $cache_file) {
+sub _meta_file ($self, $dir) {
+  return path($dir, 'meta.json');
+}
+
+sub read_cache ($self, $dir) {
   my $tx;
 
-  my $bytes = eval { $cache_file->slurp };
-  if (defined $bytes) {
-    my $data = decode_json($bytes);
-    $tx = Mojo::Transaction::HTTP->new;
-    my $request  = $tx->req;
-    my $response = $tx->res;
-    $request->url->parse($data->{url});
-    $response->code(200);
-    $response->headers->from_hash($data->{headers});
-    $response->headers->header('X-Cache-File', $cache_file);
-    $response->body($data->{body});
+  if (-d $dir) {
+    my $body = eval { $self->_body_file($dir)->slurp };
+    my $meta = eval { $self->_meta_file($dir)->slurp };
+    if (defined $body && defined $meta) {
+      my $data = decode_json($meta);
+      $tx = Mojo::Transaction::HTTP->new;
+      my $request  = $tx->req;
+      my $response = $tx->res;
+      $request->url->parse($data->{url});
+      $response->code(200);
+      $response->headers->from_hash($data->{headers});
+      $response->headers->header('X-Cache', $dir);
+      $response->body($body);
+    }
   }
 
   return $tx;
 }
 
-sub write_cache ($self, $cache_file, $tx) {
+sub write_cache ($self, $dir, $tx) {
+  my $ok       = 0;
   my $request  = $tx->req;
   my $response = $tx->res;
   my $data     = {
     url     => $request->url->to_string,
     headers => $response->headers->to_hash,
-    body    => $response->body,
   };
-  my $bytes = encode_json($data);
+  my $meta = encode_json($data);
 
-  return eval { $cache_file->spurt($bytes) };
+  if (!-d $dir) {
+    mkdir $dir;
+  }
+  if (-d $dir) {
+    if ( eval { $self->_body_file($dir)->spurt($response->body) }
+      && eval { $self->_meta_file($dir)->spurt($meta) }) {
+      $ok = 1;
+    }
+  }
+
+  return $ok;
 }
 
 sub last_modified ($self, $filename) {
@@ -95,11 +108,11 @@ sub has_expired ($self, $cache_tx) {
   # Never expire when the module is tested.
   return 0 if $ENV{CACHE_DOES_NOT_EXPIRE};
 
-  my $request    = $cache_tx->req;
-  my $response   = $cache_tx->res;
-  my $url        = $request->url->to_string;
-  my $cache_file = $response->headers->header('X-Cache-File');
-  if ($self->file_age($cache_file) > $self->override_expire->($url)) {
+  my $request  = $cache_tx->req;
+  my $response = $cache_tx->res;
+  my $url      = $request->url->to_string;
+  my $dir      = $response->headers->header('X-Cache');
+  if ($self->file_age($dir) > $self->override_expire->($url)) {
     my $expires = $response->headers->expires;
     if (defined $expires) {
       my $expiration_time = eval { Mojo::Date->new($expires) };
@@ -121,17 +134,15 @@ sub get_p ($self, $url, $log, @args) {
   my $cache_time;
 
   # Check if a cached response exists.
-  my $cache_file = $self->cache_file($url);
-  if (-f $cache_file) {
-    $cache_tx = $self->read_cache($cache_file);
-    if (defined $cache_tx) {
-      if ($self->has_expired($cache_tx)) {
-        $cache_time = Mojo::Date->new($self->last_modified($cache_file));
-      }
-      else {
-        $log->debug("Cache hit for $url");
-        $promise = Mojo::Promise->resolve($cache_tx);
-      }
+  my $dir = path($self->cache_dir, sha1_sum($url) . '2');
+  $cache_tx = $self->read_cache($dir);
+  if (defined $cache_tx) {
+    if ($self->has_expired($cache_tx)) {
+      $cache_time = Mojo::Date->new($self->last_modified($dir));
+    }
+    else {
+      $log->debug("Cache hit for $url");
+      $promise = Mojo::Promise->resolve($cache_tx);
     }
   }
 
@@ -148,7 +159,7 @@ sub get_p ($self, $url, $log, @args) {
       }
       if ($response->is_success) {
         $log->debug("Fetched $url");
-        if (!$self->write_cache($cache_file, $tx)) {
+        if (!$self->write_cache($dir, $tx)) {
           $log->error("Could not cache $url");
         }
       }
@@ -216,22 +227,16 @@ A subroutine that takes a URL and returns a minimum age in seconds.
 
 =head1 SUBROUTINES/METHODS
 
-=head2 cache_file
-
-  my $cache_file = $ua->cache_file($url);
-
-Maps a web address to a filename.
-
 =head2 read_cache
 
-  my $tx = $ua->read_cache($cache_file);
+  my $tx = $ua->read_cache($dir);
 
 Reads cached content from a file and returns a L<Mojo::Transaction::HTTP>
 object.
 
 =head2 write_cache
 
-  my $path = $ua->write_cache($cache_file, $tx);
+  my $path = $ua->write_cache($dir, $tx);
 
 Writes a L<Mojo::Transaction::HTTP> object to a file.
 

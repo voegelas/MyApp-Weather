@@ -1,0 +1,22 @@
+[
+   {
+      "boundingbox" : [
+         "59.8093113",
+         "60.1351064",
+         "10.4891652",
+         "10.9513894"
+      ],
+      "category" : "boundary",
+      "display_name" : "Oslo, Norwegen",
+      "icon" : "https://nominatim.openstreetmap.org/ui/mapicons//poi_boundary_administrative.p.20.png",
+      "importance" : 0.82373169654299,
+      "lat" : "59.9133301",
+      "licence" : "Data © OpenStreetMap contributors, ODbL 1.0. https://osm.org/copyright",
+      "lon" : "10.7389701",
+      "osm_id" : 406091,
+      "osm_type" : "relation",
+      "place_id" : 258474388,
+      "place_rank" : 12,
+      "type" : "administrative"
+   }
+]
