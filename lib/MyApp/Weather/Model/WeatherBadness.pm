@@ -3,7 +3,7 @@ use Mojo::Base -strict;
 
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-our $VERSION = '0.006';
+our $VERSION = '0.007';
 
 use Exporter qw(import);
 
@@ -108,7 +108,7 @@ MyApp::Weather::Model::WeatherBadness - Weather badness and wetness
 
 =head1 VERSION
 
-version 0.006
+version 0.007
 
 =head1 SYNOPSIS
 

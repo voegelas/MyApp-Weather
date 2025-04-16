@@ -3,7 +3,7 @@ use Mojo::Base -base, -signatures;
 
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-our $VERSION = '0.006';
+our $VERSION = '0.007';
 
 use Mojo::Cache;
 
@@ -46,7 +46,7 @@ MyApp::Weather::Model::TimeZoneFinder - Find a location's time zone
 
 =head1 VERSION
 
-version 0.006
+version 0.007
 
 =head1 SYNOPSIS
 

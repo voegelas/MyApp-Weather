@@ -3,7 +3,7 @@ use Mojo::Base 'Mojolicious::Plugin', -signatures;
 
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-our $VERSION = '0.006';
+our $VERSION = '0.007';
 
 use MyApp::Weather::View::Messages qw(gettext);
 
@@ -37,7 +37,7 @@ MyApp::Weather::Plugin::Helpers - Mojolicious helpers
 
 =head1 VERSION
 
-version 0.006
+version 0.007
 
 =head1 SYNOPSIS
 

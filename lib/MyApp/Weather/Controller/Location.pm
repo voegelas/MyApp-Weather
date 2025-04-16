@@ -3,7 +3,7 @@ use Mojo::Base 'Mojolicious::Controller', -signatures;
 
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-our $VERSION = '0.006';
+our $VERSION = '0.007';
 
 use File::Spec;
 use Mojo::File qw(path);
@@ -93,7 +93,7 @@ MyApp::Weather::Controller::Location - Weather forecast controller
 
 =head1 VERSION
 
-version 0.006
+version 0.007
 
 =head1 SYNOPSIS
 
