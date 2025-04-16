@@ -71,8 +71,8 @@ sub write_cache ($self, $dir, $tx) {
         mkdir $dir;
     }
     if (-d $dir) {
-        if (   eval { $self->_body_file($dir)->spurt($response->body) }
-            && eval { $self->_meta_file($dir)->spurt($meta) }) {
+        if (   eval { $self->_body_file($dir)->spew($response->body) }
+            && eval { $self->_meta_file($dir)->spew($meta) }) {
             $ok = 1;
         }
     }
